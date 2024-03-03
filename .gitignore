@@ -104,6 +104,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+benv/
 
 # mkdocs documentation
 /site
@@ -140,3 +141,4 @@ GitHub.sublime-settings
 
 .idea/
 .dockerignore
+

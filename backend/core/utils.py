@@ -37,10 +37,48 @@ def format_repository(repo):
     Returns:
         list: Список отформатированных репозиториев или словарь с сообщением об ошибке.
 """
+# def top_test(params):
+#     repositories = get_github_repositories(params)
+#     if repositories:
+#         formatted_repositories = [format_repository(repo) for repo in repositories]
+#         return formatted_repositories
+#     else:
+#         return {'error': 'Failed to fetch repositories'}
+
+
 def top_test(params):
     repositories = get_github_repositories(params)
     if repositories:
-        formatted_repositories = [format_repository(repo) for repo in repositories]
-        return formatted_repositories
+        return repositories
     else:
         return {'error': 'Failed to fetch repositories'}
+    
+
+
+# def top_test(params):
+#     repositories = get_github_repositories(params)
+#     if repositories:
+#         for repo in repositories:
+#             if all(key in repo for key in ('name', 'owner', 'stars', 'watchers', 'forks', 'open_issues', 'language')):
+#                 continue
+#             else:
+#                 print(f"Error: Missing key(s) in repository data: {repo}")
+#         return repositories
+#     else:
+#         return {'error': 'Failed to fetch repositories'}
+
+    
+
+
+# def top_test(params):
+#     repositories = get_github_repositories(params)
+#     if repositories:
+#         formatted_repositories = []
+#         for repo in repositories:
+#             if 'name' in repo and 'owner' in repo and 'stars' in repo and 'watchers' in repo and 'forks' in repo and 'open_issues' in repo and 'language' in repo:
+#                 formatted_repositories.append(repo)
+#             else:
+#                 print("Missing key(s) in repository data:", repo)
+#         return formatted_repositories
+#     else:
+#         return {'error': 'Failed to fetch repositories'}

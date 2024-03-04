@@ -409,15 +409,61 @@ def get_commit_activity(owner, repo, since, until):
         print(f"Не удалось получить данные: {response.status_code}")
         return None, None
 
-# Параметры запроса
-owner = 'Kylych-dev'
-repo = 'reviro_test'
-since = '2024-02-01T00:00:00Z'  # Начальная дата и время в формате ISO 8601
-until = '2024-03-01T00:00:00Z'  # Конечная дата и время в формате ISO 8601
+# # Параметры запроса
+# owner = 'Kylych-dev'
+# repo = 'reviro_test'
+# since = '2024-02-01T00:00:00Z'  # Начальная дата и время в формате ISO 8601
+# until = '2024-03-01T00:00:00Z'  # Конечная дата и время в формате ISO 8601
 
-# Получение данных о коммитах
-commit_activity, total_commits = get_commit_activity(owner, repo, since, until)
-if commit_activity is not None and total_commits is not None:
-    print("Количество коммитов на каждый день:")
-    print(commit_activity)
-    print(f"Общее количество коммитов за выбранный период времени: {total_commits}")
+# # Получение данных о коммитах
+# commit_activity, total_commits = get_commit_activity(owner, repo, since, until)
+# if commit_activity is not None and total_commits is not None:
+#     print("Количество коммитов на каждый день:")
+#     print(commit_activity)
+#     print(f"Общее количество коммитов за выбранный период времени: {total_commits}")
+
+
+
+
+
+
+
+
+
+
+
+import psycopg2
+import os
+from dotenv import load_dotenv
+
+# Загрузка переменных окружения
+load_dotenv()
+
+# Функция для вставки данных в базу данных
+def insert_repository(repo_data):
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            dbname=os.getenv('POSTGRES_DB'),
+            user=os.getenv('POSTGRES_USER'),
+            password=os.getenv('POSTGRES_PASSWORD'),
+            host=os.getenv('POSTGRES_SERVER'),
+            port=os.getenv('POSTGRES_PORT')
+        )
+        cur = conn.cursor()
+        sql_query = """INSERT INTO repositories (language) VALUES (%s)"""
+        cur.execute(sql_query, repo_data)
+        conn.commit()
+        print("Data inserted successfully.")
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Error while inserting data:", error)
+    finally:
+        if conn:
+            cur.close()
+            conn.close()
+            print("Database connection closed.")
+
+
+# Теперь вы можете вызвать функцию insert_data_into_database с тестовыми данными для проверки
+test_data = "Test data",
+insert_repository(test_data)

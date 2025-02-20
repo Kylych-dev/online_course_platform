@@ -56,16 +56,3 @@ class LogoutSerializer(serializers.Serializer):
             RefreshToken(self.token).blacklist()
         except TokenError:
             self.fail('bad_token')
-
-
-# class CustomUserSerializer(serializers.ModelSerializer):
-#     password = serializers.CharField(write_only=True)
-#     # confirm_password = serializers.CharField(write_only=True)
-
-#     class Meta:
-#         model = CustomUser
-#         fields = (
-#             'id',
-#             'email',
-#             'password'
-#         )

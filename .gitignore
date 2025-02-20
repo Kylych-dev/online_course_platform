@@ -142,3 +142,7 @@ GitHub.sublime-settings
 .idea/
 .dockerignore
 
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+

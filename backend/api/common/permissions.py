@@ -5,7 +5,7 @@ from rest_framework.views import View
 from typing import Any
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
-    def has_object_permission(self, request: Request, view, obj: Any) -> bool:
+    def has_object_permission(self, request: Request, view: View, obj: Any) -> bool:
         """
             Проверяет, является ли текущий пользователь владельцем объекта.
 

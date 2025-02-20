@@ -1,6 +1,4 @@
 from django.db import models
-
-from django.contrib.auth.models import PermissionsMixin, User
 from apps.users.models import CustomUser
 
 

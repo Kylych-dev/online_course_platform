@@ -34,6 +34,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+MIDDLEWARE += [
+    'querycount.middleware.QueryCountMiddleware'
+]
+
 ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [

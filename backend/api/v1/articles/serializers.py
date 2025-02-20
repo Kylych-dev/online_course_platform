@@ -3,6 +3,7 @@ from apps.articles.models import Article
 
 class ArticleSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.email')
+    likes = serializers.SerializerMethodField()
 
     class Meta:
         model = Article
@@ -10,10 +11,14 @@ class ArticleSerializer(serializers.ModelSerializer):
             'id',
             'owner',
             'title',
-            'content'
+            'content',
+            'likes'
         ]
         read_only_fields = ('id',)
 
+    def get_likes(self, obj):
+        # Возвращаем только количество лайков (или список id пользователей)
+        return obj.likes.count() # Или obj.likes.values_list('id', flat=True)
 '''
 
 

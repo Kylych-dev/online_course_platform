@@ -1,7 +1,5 @@
 from rest_framework import serializers
 from apps.users.models import CustomUser
-from django.contrib import auth
-from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 class RegisterSerializer(serializers.ModelSerializer):

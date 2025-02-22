@@ -39,14 +39,10 @@ http://127.0.0.1:8000/api/v1/articles/
 |------|-----------|----------|----------|----------|------------|
 | Type | Database  |   Reads  |  Writes  |  Totals  | Duplicates |
 |------|-----------|----------|----------|----------|------------|
-| RESP |  default  |    5     |    0     |    5     |     3      |
+| RESP |  default  |    3     |    0     |    3     |     0      |
 |------|-----------|----------|----------|----------|------------|
-Total queries: 5 in 0.0234s 
-
-
-
-
-
+Total queries: 3 in 0.0087s 
+[21/Feb/2025 17:22:43] "GET /api/v1/articles/ HTTP/1.1" 200 242
 '''
 
     # def get_queryset(self):

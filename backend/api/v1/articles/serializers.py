@@ -1,9 +1,36 @@
 from rest_framework import serializers
 from apps.articles.models import Article
+from apps.users.models import CustomUser
+
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор пользователей
+
+    :id: ID пользователя
+    :email: Email пользователя
+    """
+
+    class Meta:
+        model = CustomUser
+        fields = (
+            'id',
+            'email'
+        )
 
 class ArticleSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор текста
+
+    :id: ID
+    :email: Email
+    :total_likes: количество лайков
+    :total_dislikes: количество дизлайков
+    :user_reactions: реакция пользователя (None если нет реакции)
+    """
     owner = serializers.ReadOnlyField(source='owner.email')
-    likes = serializers.SerializerMethodField()
+    total_likes = serializers.IntegerField(read_only=True)
+    total_dislike = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Article
@@ -12,40 +39,7 @@ class ArticleSerializer(serializers.ModelSerializer):
             'owner',
             'title',
             'content',
-            'likes'
+            'total_likes',
+            'total_dislike'
         ]
         read_only_fields = ('id',)
-
-    def get_likes(self, obj):
-        # Возвращаем только количество лайков (или список id пользователей)
-        return obj.likes.count() # Или obj.likes.values_list('id', flat=True)
-'''
-
-
-    {
-        "id": 1,
-        "owner": "user@mail.ru",
-        "title": "qewrty tom form",
-        "content": "This content is edited"
-    },
-    {
-        "id": 2,
-        "owner": "user2@mail.ru",
-        "title": "edvard vachovski",
-        "content": "hello dear subscriber my name is edvard vachoswky"
-    }
-    
-    {
-        "id": 1,
-        "owner": "user@mail.ru",
-        "title": "qewrty tom form",
-        "content": "This content is edited"
-    },
-    {
-        "id": 2,
-        "owner": "user2@mail.ru",
-        "title": "Edvard Vachovski",
-        "content": "hello dear subscriber my name is edvard vachoswky"
-    }
-
-'''

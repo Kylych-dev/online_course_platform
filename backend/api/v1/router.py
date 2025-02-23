@@ -27,6 +27,16 @@ urlpatterns.extend(
                 'put': 'update',
                 'get': 'retrieve',
             }
-        ), name='article')
+        ), name='article'),
+        path('articles/<int:pk>/like/', articles_views.ArticleViewSet.as_view(
+            {
+                'post':'like',
+            }
+        ), name='article-like'),
+        path('articles/<int:pk>/dislike/', articles_views.ArticleViewSet.as_view(
+            {
+                'post':'dislike',
+            }
+            ), name='article-dislike'),
     ]
 )

@@ -4,7 +4,7 @@ from rest_framework import permissions, viewsets
 from apps.articles.models import Article
 from api.common.permissions import IsOwnerOrReadOnly
 
-from .serializers import ArticleSerializer
+from api.v1.articles.serializers import ArticleSerializer
 from .mixins import ReactionMixin
 
 
@@ -20,7 +20,11 @@ class ArticleViewSet(ReactionMixin, viewsets.ModelViewSet):
         GET /article/{id}/fans/ - список реакций
     """
     serializer_class = ArticleSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+
+    def get_permissions(self):
+        if self.action in ['like', 'dislike', 'unlike', 'fans']:
+            return [permissions.IsAuthenticated(), permissions.AllowAny()]
+        return [permissions.IsAuthenticated(), IsOwnerOrReadOnly()]
 
     def get_queryset(self):
         return Article.objects.annotate(
@@ -36,6 +40,8 @@ class ArticleViewSet(ReactionMixin, viewsets.ModelViewSet):
             )
         ).select_related('owner').prefetch_related('article_likes')
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)

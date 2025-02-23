@@ -4,6 +4,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 
 from api.auth import views as auth_views
 from .articles import views as articles_views
+from .users import views as users_views
 
 router = DefaultRouter(trailing_slash=False)
 
@@ -28,6 +29,12 @@ urlpatterns.extend(
                 'get': 'retrieve',
             }
         ), name='article'),
+        # path('profile/', users_views.ProfileView.as_view(), name='user-profile'),
+        path('profile/activity/', users_views.ProfileView.as_view({'get':'retrieve'}), name='user-profile-activity'),
+        path('profile/stats/', users_views.ProfileView.as_view({'get':'stats'}), name='user-profile-stats'),
+
+
+
         path('articles/<int:pk>/like/', articles_views.ArticleViewSet.as_view(
             {
                 'post':'like',

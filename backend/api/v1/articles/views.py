@@ -1,23 +1,41 @@
 from django.db.models.aggregates import Count
+from django.db.models.query_utils import Q
 from rest_framework import permissions, viewsets
 from apps.articles.models import Article
 from api.common.permissions import IsOwnerOrReadOnly
 
 from .serializers import ArticleSerializer
+from .mixins import ReactionMixin
 
 
-class ArticleViewSet(viewsets.ModelViewSet):
-    queryset = Article.objects.all().prefetch_related('likes')
+class ArticleViewSet(ReactionMixin, viewsets.ModelViewSet):
+    """
+    Methods:
+        GET /article/ - список постов
+        POST /article/ - создание поста
+        GET /article/{id}/ - детали поста
+        POST /article/{id}/like/ - лайк
+        POST /article/{id}/dislike/ - дизлайк
+        DELETE /article/{id}/unlike/ - удаление реакции
+        GET /article/{id}/fans/ - список реакций
+    """
     serializer_class = ArticleSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
 
     def get_queryset(self):
-        queryset = super().get_queryset().select_related('owner').prefetch_related('likes')
-        # print(queryset, 'Article Queried -=-=-=-=')
-        queryset = queryset.prefetch_related('likes')
-        print(queryset.query)
+        return Article.objects.annotate(
+            total_likes=Count(
+                'article_likes',
+                filter=Q(article_likes__is_like=True),
+                distinct=True
+            ),
+            total_dislike=Count(
+                'article_likes',
+                filter=Q(article_likes__is_like=False),
+                distinct=True
+            )
+        ).select_related('owner').prefetch_related('article_likes')
 
-        return queryset
 
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)

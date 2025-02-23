@@ -7,7 +7,6 @@ class Article(models.Model):
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     content = models.TextField()
-    likes = models.ManyToManyField(CustomUser, through='Like', related_name='liked_articles')
 
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
@@ -17,8 +16,10 @@ class Article(models.Model):
 
 
 class Like(models.Model):
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='article_likes')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_likes')
+    is_like = models.BooleanField(default=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

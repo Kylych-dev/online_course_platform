@@ -4,6 +4,7 @@ from rest_framework.request import Request
 from rest_framework.views import View
 from typing import Any
 
+
 class IsOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request: Request, view: View, obj: Any) -> bool:
         """
@@ -25,3 +26,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             raise PermissionDenied('Вы не являетесь владельцем этого текста.')
 
         return True
+
+
+class IsProfileOwner(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return request.user == obj.owner

@@ -42,3 +42,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             'refresh': str(refresh),
             'access': str(refresh.access_token)
         }
+
+    def get_total_likes(self):
+        return self.user_likes.filter(is_like=True).count()
+
+    def get_total_dislikes(self):
+        return self.user_likes.filter(is_like=False).count()
+
+    def get_total_posts(self):
+        return self.article_set.count()
